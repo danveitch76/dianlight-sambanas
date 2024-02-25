@@ -12,7 +12,7 @@ ARG HDDTEMP_VERSION
 FROM $BUILD_FROM as builder
 
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
-RUN apk add --no-cache make gcc libc-dev linux-headers build-base autoconf automake
+RUN apk add --no-cache make gcc libc-dev linux-headers build-base autoconf automake musl
 
 ARG BUILD_ARCH
 ARG HDDTEMP_VERSION
@@ -108,7 +108,11 @@ RUN curl -Lso /usr/bin/ha "https://github.com/home-assistant/cli/releases/downlo
 
 # Copy data
 COPY rootfs /
-
+RUN for f in $(find . -name 'run'); do (cd "$(dirname $f)" && chmod 0755 "$(basename $f)") done && \
+    for f in $(find . -name 'finish'); do (cd "$(dirname $f)" && chmod 0755 "$(basename $f)") done && \
+    for f in $(find . -name 'down'); do (cd "$(dirname $f)" && chmod 0755 "$(basename $f)") done && \
+    for f in $(find . -name 'up'); do (cd "$(dirname $f)" && chmod 0755 "$(basename $f)") done && \
+    for f in $(find . -name '*.sh'); do (cd "$(dirname $f)" && chmod 0755 "$(basename $f)") done 
 # Labels
 LABEL \
     io.hass.name="${BUILD_NAME}" \
@@ -116,13 +120,13 @@ LABEL \
     io.hass.arch="${BUILD_ARCH}" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
-    maintainer="Lucio Tarantino <@dianlight>" \
+    maintainer="Dan Veitch <@danveitch76>" \
     org.opencontainers.image.title="${BUILD_NAME}" \
     org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
-    org.opencontainers.image.vendor="Home Assistant Dianlight Add-ons" \
-    org.opencontainers.image.authors="Lucio Tarantino <@dianlight>" \
+    org.opencontainers.image.vendor="Home Assistant Dan Add-ons" \
+    org.opencontainers.image.authors="Dan Veitch <@danveitch76>" \
     org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.url="https://github.com/dianlight/hassio-addons" \
+    org.opencontainers.image.url="https://github.com/danveitch76/hassio-addons" \
     org.opencontainers.image.source="https://github.com/${BUILD_REPOSITORY}" \
     org.opencontainers.image.documentation="https://github.com/${BUILD_REPOSITORY}/blob/main/README.md" \
     org.opencontainers.image.created=${BUILD_DATE} \

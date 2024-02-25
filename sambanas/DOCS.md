@@ -45,6 +45,7 @@ Fields between `<` and `>` indicate values that are omitted and need to be chang
 workgroup: WORKGROUP
 username: Hassio
 password: "<Your secret password>"
+admin_username: Hassio
 allow_hosts:
   - 10.0.0.0/8
   - 172.16.0.0/12
@@ -55,11 +56,13 @@ allow_hosts:
 automount: true
 moredisks:
   - "<Partition's Label>"
+mountoptions: "nosuid,relatime,noexec"
 veto_files:
   - "._*"
   - ".DS_Store"
   - Thumbs.db
 compatibility_mode: false
+recycle_bin_enabled: false
 available_disks_log: true
 wsdd2: false
 medialibrary:
@@ -93,6 +96,10 @@ The username you would like to use to authenticate with the Samba server.
 
 The password that goes with the username configured for authentication.
 
+### Option: `admin_username` (required)
+
+The admin username you would like to use to have root access to all shares with the Samba server.
+
 ### Option: `allow_hosts` (required)
 
 List of hosts/networks allowed to access the shared folders.
@@ -103,6 +110,12 @@ List of hosts/networks allowed to access the shared folders.
 Automatic mount and expose all labeled disk.
 
 Defaults to `true`.
+
+### Option `mountoptions` (required)
+Allows setting of mount options.
+
+**_Protection Mode must be disabled to allow this function_**
+Defaults to 'nosuid,relatime,noexec'
 
 ### Option: `moredisks` (optional)
 
@@ -248,6 +261,13 @@ when you absolutely need it and understand the possible consequences.
 
 Defaults to `false`.
 
+### Option: `recycle_bin_enabled` (optional)
+
+Setting this option to `true` will enable recycle bin functions
+on the Samba add-on. Check 'veto_files' as could be blocked by '._*'.
+
+Defaults to `false`.
+
 ### Option: `wsdd2` (optional) (**advanced users only**)
 
 Setting this option to `true` will enable the use of wsdd2 over wsdd. Set to true if you have trouble to see the disk on Windows 11+
@@ -325,7 +345,7 @@ Defaults to `false`.
 ## Support
 
 ### Do you like the Addon?
-<a href="https://www.buymeacoffee.com/ypKZ2I0"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=ypKZ2I0&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+<a href="https://www.buymeacoffee.com/danveitch76"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=danveitch76&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 ### Common problems
 
@@ -335,6 +355,6 @@ Defaults to `false`.
 
 In case you've found a bug, please [open an issue on our GitHub][issue].
 
-[issue]: https://github.com/dianlight/hassio-addons/issues
+[issue]: https://github.com/danveitch76/hassio-addons/issues
 [reddit]: https://reddit.com/r/homeassistant
-[repository]: https://github.com/dianlight/hassio-addons
+[repository]: https://github.com/danveitch76/hassio-addons
